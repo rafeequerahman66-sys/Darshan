@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Birthday protocol initiated — a surprise built for Darshan." />
+  <title>HAPPY BIRTHDAY // DARSHAN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <!-- Effects layers -->
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <!-- Audio: real Yamaha RX-100 + Kawasaki engine clips (CC, from Wikimedia Commons) -->
+  <audio id="bikeRev" preload="auto">
+    <source src="audio/bike.mp3" type="audio/mpeg" />
+    <source src="audio/bike.ogg" type="audio/ogg" />
+  </audio>
+  <audio id="bikeIdle" preload="auto" loop>
+    <source src="audio/bike-idle.mp3" type="audio/mpeg" />
+    <source src="audio/bike-idle.ogg" type="audio/ogg" />
+  </audio>
+
+  <!-- ============ TOP HUD BAR ============ -->
+  <div class="hud">
+    <span class="hud__tag">// BIRTHDAY_PROTOCOL</span>
+    <span class="hud__mid">TARGET: <b>DARSHAN</b></span>
+    <button id="soundToggle" class="hud__sound" aria-pressed="false">
+      <span class="dot"></span> ENGINE AUDIO: <b id="soundState">OFF</b>
+    </button>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <span class="corner corner--tl" aria-hidden="true"></span>
+    <span class="corner corner--tr" aria-hidden="true"></span>
+    <span class="corner corner--bl" aria-hidden="true"></span>
+    <span class="corner corner--br" aria-hidden="true"></span>
+
+    <div class="hero__inner">
+      <p class="kicker reveal"><span class="kicker__spike"></span> ROUND 01 · OBJECTIVE: CELEBRATE</p>
+      <h1 class="hero__title reveal">
+        <span class="line">HAPPY</span>
+        <span class="line">BIRTHDAY</span>
+        <span class="line line--accent" data-text="DARSHAN">DARSHAN</span>
+      </h1>
+      <p class="hero__sub reveal">
+        Wishing you a day filled with happiness, laughter, and unforgettable memories.
+        This year, everything you’ve been grinding for — locked in and secured.
+      </p>
+      <div class="hero__actions reveal">
+        <a href="#video" class="btn btn--primary" data-rev>INITIATE SURPRISE <span class="btn__ar">►</span></a>
+        <a href="#letter" class="btn btn--ghost">READ TRANSMISSION</a>
+      </div>
+      <p class="hero__hint reveal">🏍️ tip: flip <b>ENGINE AUDIO</b> on — the buttons rev a real bike.</p>
+    </div>
+    <a href="#video" class="scroll-cue" aria-label="Scroll down"><span></span></a>
+  </header>
+
+  <main>
+    <!-- ============ VIDEO ============ -->
+    <section class="section" id="video">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-head__no">01</span>
+          <div>
+            <p class="sec-head__ey">// MISSION BRIEFING</p>
+            <h2 class="sec-title">A Little Birthday Surprise For You</h2>
+          </div>
+        </div>
+
+        <div class="video-frame reveal">
+          <span class="tick tick--tl"></span><span class="tick tick--tr"></span>
+          <span class="tick tick--bl"></span><span class="tick tick--br"></span>
+          <video controls playsinline preload="metadata">
+            <source src="video/birthday-video.mp4" type="video/mp4" />
+            Your browser doesn’t support the video tag.
+          </video>
+        </div>
+        <p class="video-caption reveal">
+          <span class="rec">● REC</span> A few moments, memories, and wishes put together just for you.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ LETTER ============ -->
+    <section class="section" id="letter">
+      <div class="container container--narrow">
+        <div class="sec-head reveal">
+          <span class="sec-head__no">02</span>
+          <div>
+            <p class="sec-head__ey">// INCOMING TRANSMISSION</p>
+            <h2 class="sec-title">A Note For You</h2>
+          </div>
+        </div>
+
+        <div class="dossier reveal">
+          <div class="dossier__bar">
+            <span>MSG_TO: DARSHAN</span><span>STATUS: <b>DELIVERED</b></span>
+          </div>
+          <div class="dossier__body">
+            <p>
+              Happy Birthday, Darshan. Wishing you an amazing year ahead filled with
+              growth, happiness, success, and great memories.
+            </p>
+            <p>
+              Keep shining, keep winning, and keep being the amazing person you are.
+              Ride fast, aim true, and may this year go full throttle. 🏍️
+            </p>
+            <p class="dossier__sign">— YOUR CREW</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CLOSING ============ -->
+    <section class="section closing" id="closing">
+      <div class="container container--narrow reveal">
+        <p class="closing__ey">// MISSION COMPLETE</p>
+        <h2 class="sec-title sec-title--center">Here’s To You, Darshan</h2>
+        <p class="closing__text">
+          Here’s to more memories, more success, and a year full of great moments.
+          Happy Birthday once again, Darshan.
+        </p>
+        <button class="btn btn--primary btn--lg" id="celebrateBtn" data-rev>
+          ENGAGE 🎉 <span class="btn__ar">►</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>BIRTHDAY_PROTOCOL v1.0</span>
+    <span>BUILT FOR DARSHAN</span>
+    <a href="#top">RETURN TO TOP ↑</a>
+  </footer>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>

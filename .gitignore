@@ -1,0 +1,9 @@
+# Raw source clips (the one in use is copied to video/birthday-video.mp4)
+WhatsApp Video*.mp4
+
+# OS / editor
+Thumbs.db
+.DS_Store
+
+# Dependencies
+node_modules/

@@ -1,0 +1,272 @@
+/* ============================================================
+   HAPPY BIRTHDAY // DARSHAN  —  Valorant-inspired tactical UI
+   Palette: Valorant red on dark ink, mint accents, cream text
+   ============================================================ */
+
+:root {
+  --ink:     #0f1923;   /* Valorant navy-black */
+  --ink-2:   #111f2b;
+  --ink-3:   #1c2b38;
+  --red:     #ff4655;   /* Valorant signature red */
+  --red-deep:#bd3944;
+  --mint:    #18e5c4;   /* teal accent */
+  --cream:   #ece8e1;   /* Valorant off-white */
+  --muted:   #7c8794;
+  --line:    rgba(236, 232, 225, 0.14);
+  --maxw:    1120px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "Barlow", system-ui, sans-serif;
+  color: var(--cream);
+  background: var(--ink);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* ---------- Ambient layers ---------- */
+.grid-bg {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 70, 85, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 70, 85, 0.05) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, #000 40%, transparent 100%);
+}
+.scanlines {
+  position: fixed; inset: 0; z-index: 55; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.14) 0 1px, transparent 1px 3px);
+  mix-blend-mode: multiply; opacity: 0.5;
+}
+#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 60; }
+
+/* keep real content above ambient layers */
+.hud, .hero, main, .footer { position: relative; z-index: 2; }
+
+/* ---------- Type ---------- */
+h1, h2 { font-family: "Anton", "Barlow Condensed", sans-serif; font-weight: 400; letter-spacing: 0.5px; text-transform: uppercase; line-height: 0.95; }
+.mono { font-family: "Share Tech Mono", monospace; }
+
+/* ---------- Layout ---------- */
+.container { width: min(var(--maxw), 92vw); margin: 0 auto; }
+.container--narrow { width: min(760px, 92vw); }
+.section { padding: clamp(4rem, 9vw, 7.5rem) 0; }
+
+/* ============================================================
+   TOP HUD BAR
+   ============================================================ */
+.hud {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 0.7rem clamp(1rem, 4vw, 2.4rem);
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+  border-bottom: 1px solid var(--line);
+  background: rgba(15, 25, 35, 0.7);
+  backdrop-filter: blur(6px);
+}
+.hud__tag { color: var(--red); }
+.hud__mid { color: var(--muted); }
+.hud__mid b { color: var(--cream); }
+.hud__sound {
+  font: inherit; text-transform: uppercase; cursor: pointer;
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--line); padding: 0.3rem 0.7rem;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  transition: border-color 0.2s, color 0.2s;
+}
+.hud__sound:hover { color: var(--cream); border-color: var(--red); }
+.hud__sound b { color: var(--muted); }
+.hud__sound .dot { width: 7px; height: 7px; background: var(--muted); border-radius: 50%; }
+.hud__sound[aria-pressed="true"] .dot { background: var(--mint); box-shadow: 0 0 10px var(--mint); animation: pulse 1.2s infinite; }
+.hud__sound[aria-pressed="true"] b { color: var(--mint); }
+
+/* ============================================================
+   Shared angular button
+   ============================================================ */
+.btn {
+  --cut: 12px;
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 700; font-size: 1.02rem; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 0.95rem 1.7rem; cursor: pointer; text-decoration: none; border: none;
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+.btn--primary { background: var(--red); color: #fff; }
+.btn--primary:hover { background: #ff5f6c; transform: translateY(-2px); }
+.btn--primary .btn__ar { transition: transform 0.2s; }
+.btn--primary:hover .btn__ar { transform: translateX(4px); }
+.btn--ghost { background: transparent; color: var(--cream); box-shadow: inset 0 0 0 1px var(--line); }
+.btn--ghost:hover { color: var(--ink); background: var(--cream); transform: translateY(-2px); }
+.btn--lg { font-size: 1.25rem; padding: 1.15rem 2.6rem; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  min-height: calc(100svh - 40px);
+  display: grid; place-items: center; text-align: left;
+  padding: clamp(2rem, 6vw, 5rem) clamp(1.2rem, 6vw, 4rem);
+  overflow: hidden;
+}
+.hero::before { /* red diagonal wash */
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(60% 60% at 78% 20%, rgba(255,70,85,0.20), transparent 60%),
+    linear-gradient(115deg, transparent 55%, rgba(255,70,85,0.10) 55% 58%, transparent 58%);
+}
+.hero__inner { width: min(var(--maxw), 100%); }
+
+.kicker {
+  display: inline-flex; align-items: center; gap: 0.7rem;
+  font-family: "Share Tech Mono", monospace; font-size: 0.8rem;
+  letter-spacing: 0.24em; text-transform: uppercase; color: var(--mint);
+  margin-bottom: 1.4rem;
+}
+.kicker__spike { width: 26px; height: 2px; background: var(--mint); }
+
+.hero__title { font-size: clamp(3rem, 12vw, 9rem); margin-bottom: 1.6rem; }
+.hero__title .line { display: block; }
+.hero__title .line--accent {
+  color: var(--red);
+  position: relative; width: fit-content;
+  text-shadow: 0 0 34px rgba(255, 70, 85, 0.45);
+}
+.hero__title .line--accent::before { /* glitch echo */
+  content: attr(data-text); position: absolute; left: 3px; top: 0;
+  color: var(--mint); opacity: 0.55; mix-blend-mode: screen;
+  clip-path: inset(0 0 62% 0); animation: glitch 3.6s infinite steps(2);
+}
+.hero__sub { max-width: 560px; color: var(--muted); font-size: clamp(1.02rem, 2vw, 1.2rem); margin-bottom: 2.2rem; }
+.hero__actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero__hint { margin-top: 1.6rem; font-size: 0.85rem; color: var(--muted); }
+.hero__hint b { color: var(--mint); }
+
+/* Corner brackets */
+.corner { position: absolute; width: 34px; height: 34px; border: 2px solid var(--red); opacity: 0.6; z-index: 3; }
+.corner--tl { top: 60px; left: 26px; border-right: 0; border-bottom: 0; }
+.corner--tr { top: 60px; right: 26px; border-left: 0; border-bottom: 0; }
+.corner--bl { bottom: 26px; left: 26px; border-right: 0; border-top: 0; }
+.corner--br { bottom: 26px; right: 26px; border-left: 0; border-top: 0; }
+
+.scroll-cue { position: absolute; bottom: 1.4rem; left: 50%; transform: translateX(-50%);
+  width: 24px; height: 40px; border: 2px solid var(--line); z-index: 3; }
+.scroll-cue span { position: absolute; top: 7px; left: 50%; margin-left: -2px; width: 4px; height: 8px; background: var(--red); animation: cue 1.5s infinite; }
+
+/* ============================================================
+   Section heads
+   ============================================================ */
+.sec-head { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 2.6rem; }
+.sec-head__no {
+  font-family: "Anton", sans-serif; font-size: clamp(2.4rem, 6vw, 4rem);
+  color: transparent; -webkit-text-stroke: 1.5px var(--red); line-height: 1;
+}
+.sec-head__ey { font-family: "Share Tech Mono", monospace; font-size: 0.78rem; letter-spacing: 0.22em; color: var(--mint); margin-bottom: 0.2rem; }
+.sec-title { font-size: clamp(1.9rem, 4.6vw, 3.2rem); }
+.sec-title--center { text-align: center; }
+
+/* ============================================================
+   VIDEO
+   ============================================================ */
+.video-frame {
+  --cut: 22px; position: relative; padding: 6px; background: var(--red);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  max-width: 940px; margin: 0 auto;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+}
+.video-frame video {
+  display: block; width: 100%; aspect-ratio: 16/9; object-fit: cover; background: #000;
+  clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+}
+.tick { position: absolute; width: 14px; height: 14px; border: 2px solid var(--cream); z-index: 3; }
+.tick--tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; }
+.tick--tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; }
+.tick--bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; }
+.tick--br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; }
+.video-caption { text-align: center; color: var(--muted); margin-top: 1.5rem; font-size: 0.95rem; }
+.rec { color: var(--red); font-family: "Share Tech Mono", monospace; letter-spacing: 0.1em; margin-right: 0.5rem; }
+
+/* ============================================================
+   GALLERY
+   ============================================================ */
+.gallery__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1.2rem; }
+.photo {
+  --cut: 16px; position: relative; overflow: hidden;
+  aspect-ratio: 4/5; background: var(--ink-2);
+  box-shadow: inset 0 0 0 1px var(--line);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  transition: transform 0.3s ease;
+}
+.photo:hover { transform: translateY(-6px); box-shadow: inset 0 0 0 1px var(--red); }
+.photo img, .photo .photo__ph { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo__ph { display: grid; place-items: center; font-size: 2.4rem; background:
+  repeating-linear-gradient(45deg, var(--ink-2) 0 14px, var(--ink-3) 14px 28px); color: var(--muted); }
+.photo__idx { position: absolute; top: 10px; left: 12px; font-family: "Share Tech Mono", monospace; font-size: 0.72rem; color: var(--mint); z-index: 2; }
+.photo__cap {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 1.6rem 0.9rem 0.8rem;
+  font-family: "Barlow Condensed", sans-serif; font-weight: 600; letter-spacing: 0.04em;
+  text-transform: uppercase; font-size: 0.9rem;
+  background: linear-gradient(to top, rgba(15,25,35,0.95), transparent);
+}
+.photo__cap::before { content: ""; display: inline-block; width: 10px; height: 2px; background: var(--red); margin-right: 6px; vertical-align: middle; }
+
+/* ============================================================
+   LETTER / DOSSIER
+   ============================================================ */
+.dossier {
+  --cut: 18px; background: var(--ink-2); box-shadow: inset 0 0 0 1px var(--line);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+}
+.dossier__bar {
+  display: flex; justify-content: space-between; gap: 1rem;
+  padding: 0.7rem 1.4rem; background: var(--red); color: #fff;
+  font-family: "Share Tech Mono", monospace; font-size: 0.72rem; letter-spacing: 0.14em;
+}
+.dossier__body { padding: clamp(1.6rem, 4vw, 2.8rem); }
+.dossier__body p { color: var(--cream); margin-bottom: 1.1rem; font-size: 1.08rem; }
+.dossier__sign { font-family: "Barlow Condensed", sans-serif; font-weight: 700; letter-spacing: 0.18em; color: var(--mint) !important; margin-top: 1.4rem; }
+
+/* ============================================================
+   CLOSING
+   ============================================================ */
+.closing { text-align: center; }
+.closing__ey { font-family: "Share Tech Mono", monospace; letter-spacing: 0.24em; color: var(--red); margin-bottom: 0.8rem; font-size: 0.85rem; }
+.closing__text { color: var(--muted); font-size: clamp(1.05rem, 2.2vw, 1.3rem); max-width: 560px; margin: 1rem auto 2.4rem; }
+
+/* ---------- Footer ---------- */
+.footer {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.6rem;
+  padding: 1.6rem clamp(1rem, 4vw, 2.4rem);
+  border-top: 1px solid var(--line);
+  font-family: "Share Tech Mono", monospace; font-size: 0.72rem; letter-spacing: 0.16em;
+  color: var(--muted); text-transform: uppercase;
+}
+.footer a { color: var(--red); text-decoration: none; }
+
+/* ============================================================
+   Animations
+   ============================================================ */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+@keyframes cue   { 0% { top: 7px; opacity: 1; } 100% { top: 22px; opacity: 0; } }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes glitch {
+  0%, 92%, 100% { transform: translate(0); opacity: 0.5; }
+  93% { transform: translate(-3px, 1px); opacity: 0.8; }
+  96% { transform: translate(2px, -1px); opacity: 0.7; }
+}
+
+@media (max-width: 560px) {
+  .hud__mid { display: none; }
+  .hero { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; }
+}
